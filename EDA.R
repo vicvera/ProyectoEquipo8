@@ -86,3 +86,4 @@ df2 <- clean_names(df2)
 column_names <- data.frame(Column_Names = colnames(df2))
 # Print the data frame displaying the cleaned column names
 print(column_names)
+
