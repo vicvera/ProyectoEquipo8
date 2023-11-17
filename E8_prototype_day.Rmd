@@ -3,3 +3,19 @@ title: Prototype Day
 output: html_document
 ---
 
+Tarjetas de crédito: un análisis estadístico
+
+Prototype Day
+
+Modulo 5: Programación y estadítica con R
+
+Octubre - Noviembre 2023
+
+Equipo 8
+Integrantes:
+
+Genesis Viridiana Varela Salinas
+Lizeth Marquez Quiroz
+Maricruz Conti del Castillo
+Miguel Augusto Ismerio Legarreta
+Victor Manuel Vera Arzate
