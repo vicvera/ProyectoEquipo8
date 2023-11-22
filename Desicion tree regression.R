@@ -145,3 +145,7 @@ df2$tree_probabilities <- predict(tree_model, newdata = df2, type = "vector")
 
 # Display the first few rows of the updated dataframe
 head(df2)
+
+
+# Crear un nuevo dataframe con las columnas de interés
+df_probabilities <- df2[c("attrition_flag", "tree_probabilities")]
