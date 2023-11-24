@@ -149,3 +149,14 @@ head(df2)
 
 # Crear un nuevo dataframe con las columnas de interés
 df_probabilities <- df2[c("attrition_flag", "tree_probabilities")]
+
+
+
+
+
+# Convertir las predicciones a factores binarios
+y_test_pred <- as.factor(ifelse(y_test_pred > 0.5, 1, 0))
+
+# Confusion Matrix
+conf_matrix <- confusionMatrix(data = y_test_pred, reference = as.factor(y_test))
+print(conf_matrix)
