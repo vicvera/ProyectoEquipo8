@@ -31,7 +31,7 @@ print(column_names)
 
 
 
-
+# Categoricos a numericos
 df2$attrition_flag <- case_when(
   df2$attrition_flag == "Attrited Customer" ~ 0,
   df2$attrition_flag == "Existing Customer" ~ 1,
@@ -83,10 +83,6 @@ df2$card_category <- case_when(
 
 
 head(df2)
-
-
-
-
 
 
 
@@ -160,3 +156,57 @@ y_test_pred <- as.factor(ifelse(y_test_pred > 0.5, 1, 0))
 # Confusion Matrix
 conf_matrix <- confusionMatrix(data = y_test_pred, reference = as.factor(y_test))
 print(conf_matrix)
+
+
+  
+
+
+
+
+
+# Convert the data frames to LightGBM datasets
+train_data <- lgb.Dataset(data = as.matrix(x_train), label = as.numeric(y_train))
+test_data <- lgb.Dataset(data = as.matrix(x_test), label = as.numeric(y_test), reference = train_data)
+
+# Set LightGBM parameters
+params <- list(
+  objective = "binary",
+  metric = "binary_error",
+  boosting_type = "gbdt",
+  num_leaves = 31,
+  learning_rate = 0.05,
+  feature_fraction = 0.9
+)
+
+# Train the LightGBM model
+lgb_model <- lgb.train(
+  params = params,
+  data = train_data,
+  valids = setNames(list(test_data), "test"),
+  nrounds = 10,  # You can adjust the number of boosting rounds
+  early_stopping_rounds = 10
+)
+
+# Make predictions on the test set
+predictions <- predict(lgb_model, as.matrix(x_test))
+
+# Convert predicted probabilities to binary predictions (0 or 1)
+predicted_labels <- ifelse(predictions > 0.5, 1, 0)
+
+# Evaluate the model
+accuracy <- mean(predicted_labels == y_test)
+cat("Accuracy on the test set: ", sprintf("%.2f%%", accuracy * 100), "\n")
+
+
+
+# Make predictions on the test set
+predictions <- predict(lgb_model, as.matrix(x_test))
+
+# Convert predicted probabilities to binary predictions (0 or 1)
+predicted_labels <- ifelse(predictions > 0.5, 1, 0)
+
+# Create a confusion matrix
+confusion_matrix <- confusionMatrix(table(predicted_labels, y_test))
+
+# Display the confusion matrix
+print(confusion_matrix)
